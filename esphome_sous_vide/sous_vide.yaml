@@ -1,0 +1,62 @@
+esphome:
+  name: sousvide
+  platform: ESP32
+  board: nodemcu-32s
+
+wifi: !include wifi.yaml
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+# outputs
+
+output:
+  - platform: ledc
+    pin: GPIO17
+    id: gpio_17
+
+switch:
+  - platform: gpio
+    id: gpio_16
+    pin: GPIO16
+
+# input
+# ds18b20
+dallas:
+  - pin: 14
+    update_interval: 5s
+
+sensor:
+  - platform: dallas
+    address: 0x820000084B194128
+    name: "Sensor 0"
+    id: ds18b20_0
+  
+
+# pump pwm
+fan:
+  - platform: speed
+    output: gpio_17
+    name: "Circulation Pump"
+
+# water heater
+climate:
+  - platform: bang_bang
+    name: Water Heater
+    sensor: ds18b20_0
+    default_target_temperature_low: 25 °C
+    default_target_temperature_high: 30 °C
+    visual:
+      min_temperature: 20.0
+      max_temperature: 80.0
+      temperature_step: 1.0
+
+    heat_action:
+      - switch.turn_on: gpio_16
+    idle_action:
+      - switch.turn_off: gpio_16
