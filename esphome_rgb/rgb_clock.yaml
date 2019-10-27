@@ -1,0 +1,35 @@
+esphome:
+  name: rgbclock
+  platform: ESP32
+  board: esp32dev
+
+wifi: !include wifi.yaml
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+light:
+  - platform: rgb
+    name: "Bed LED Strip"
+    red: led_red
+    green: led_green
+    blue: led_blue
+
+output:
+  - platform: ledc
+    id: led_green
+    pin: GPIO16
+    frequency: 200
+  - platform: ledc
+    id: led_red
+    pin: GPIO17
+    frequency: 200
+  - platform: ledc
+    id: led_blue
+    pin: GPIO18
+    frequency: 200
