@@ -1,0 +1,3 @@
+[submodule "hassio_config"]
+	path = hassio_config
+	url = git@github.com:manuelseeboeck/hassio_config.git
